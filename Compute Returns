@@ -1,0 +1,38 @@
+# Author: George 
+
+# Import Statements
+
+import pandas as pd
+import matplotlib as plt
+import seaborn as sns
+sns.set()
+
+#import yfinance as yf
+
+
+
+# Variable Definitions
+
+# main
+
+
+print("let's go")
+print("")
+
+df = pd.read_csv("fb_price.csv")
+
+df = df[{"Date", "Adj Close"}]
+df.rename(columns={"Date":"date", "Adj Close": "price_t"}, inplace = True)
+df["price_t-1"] = df["price_t"].shift(1)
+
+df["returns_manual"] = df["price_t"] / df["price_t-1"] - 1
+df["returns_pct_change_method"] = df["price_t"].pct_change(1)
+df["returns"] = (df["price_t"] / df["price_t"].shift(1)) - 1
+
+print(df.head())
+
+#yf.download("AAPL", start = "01/01/2010", end = "12/31/2021")
+
+print("")
+print("all done")
+
