@@ -1,0 +1,24 @@
+# Return expected retuns
+
+def getExpectedReturns(df, price_col_name, annualised=True, annualise_method='sophisticated', returns_frequency='daily'):
+    returns = df[price_col_name].pct_change(1)
+    expected_return_daily_weekly = returns.mean()
+    
+    if annualised == False:
+        return expected_return_daily_weekly
+    
+    else:
+        if annualise_method == 'sophisticated':
+            if returns_frequency == 'daily':
+                expected_return_annualised = (1 + expected_return_daily_weekly) ** 250 - 1
+            elif returns_frequency == 'weekly':
+                expected_return_annualised = (1 + expected_return_daily_weekly) ** 52 - 1
+
+        elif annualise_method == 'crude':
+            if returns_frequency == 'daily':
+                expected_return_annualised = expected_return_daily_weekly * 250
+            elif returns_frequency == 'weekly':
+                expected_return_annualised = expected_return_daily_weekly * 52
+
+        return expected_return_annualised
+    
